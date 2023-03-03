@@ -1,0 +1,15 @@
+D:\Code\.NET\TCPIP\TCPIPSampleApp\bin\Debug\net6.0\TCPIPSampleApp.exe
+D:\Code\.NET\TCPIP\TCPIPSampleApp\bin\Debug\net6.0\TCPIPSampleApp.deps.json
+D:\Code\.NET\TCPIP\TCPIPSampleApp\bin\Debug\net6.0\TCPIPSampleApp.runtimeconfig.json
+D:\Code\.NET\TCPIP\TCPIPSampleApp\bin\Debug\net6.0\TCPIPSampleApp.dll
+D:\Code\.NET\TCPIP\TCPIPSampleApp\bin\Debug\net6.0\TCPIPSampleApp.pdb
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.csproj.AssemblyReference.cache
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.AssemblyInfoInputs.cache
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.AssemblyInfo.cs
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.csproj.CoreCompileInputs.cache
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.dll
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\refint\TCPIPSampleApp.dll
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.pdb
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\TCPIPSampleApp.genruntimeconfig.cache
+D:\Code\.NET\TCPIP\TCPIPSampleApp\obj\Debug\net6.0\ref\TCPIPSampleApp.dll
