@@ -6,22 +6,29 @@ namespace TCPIPSampleApp
 {
     internal class Program
     {
+        private static Socket client;
+        //callback for timer object.
+        private static void CloseSocket(object state)
+        {
+            Console.WriteLine("Socket client timeout elapsed");
+            client.Close();
+        }
         public static async Task UseSocketClass(string ipString, int port, string message, int sendTimeoutMs, int receiveTimeoutMs)
         {
             string response = "";
-            int received;
+            Timer clientReceiveTimer = null;
+            Timer clientReceiveTimerLoop = null;
             //Build ip endpoint 
             IPAddress ip = IPAddress.Parse(ipString);
             IPEndPoint ipEndPoint = new(ip, port);
             //Initialize socket client to use TCP protocol 
-            using Socket client = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            client = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             try
             {
                 //initialize connection to remote endpoint 
                 await client.ConnectAsync(ipEndPoint);
                 //Set initial timeouts 
                 client.SendTimeout = sendTimeoutMs;
-                client.ReceiveTimeout = receiveTimeoutMs;
                 /*  
                  * Get message length, convert it into big endian notation and convert 
                  * that into a byte array and send it to the remote endpoint. 
@@ -32,17 +39,20 @@ namespace TCPIPSampleApp
                 if (BitConverter.IsLittleEndian)
                     Array.Reverse(messageLengthBytes);
 
-                _ = await client.SendAsync(messageLengthBytes, SocketFlags.None);
+                await client.SendAsync(messageLengthBytes, SocketFlags.None);
                 //Asynchronously send the actual message bytes to the remote endpoint 
                 var messageBytes = Encoding.UTF8.GetBytes(message);
                 Console.WriteLine($"Socket client sent message: {message}");
-                _ = await client.SendAsync(messageBytes, SocketFlags.None);
+                await client.SendAsync(messageBytes, SocketFlags.None);
                 /* 
                  * Get the framing bytes from T24 which describes the length of the expected 
                  * message. 
                 */
                 var framingBuffer = new byte[4];
-                client.Receive(framingBuffer, SocketFlags.None);
+                //Create timer object to act as a timeout since .Receive() method doensn't work for asynchronous calls
+                clientReceiveTimer = new Timer(CloseSocket, null, receiveTimeoutMs, receiveTimeoutMs);
+                await client.ReceiveAsync(framingBuffer, SocketFlags.None);
+                await clientReceiveTimer.DisposeAsync();
                 /* 
                  * Reverse the array (since it is in little endian notation) and then convert 
                  * to an int. 
@@ -57,10 +67,13 @@ namespace TCPIPSampleApp
                 int actualresponseLength = 0;
                 while (actualresponseLength < expectedResponseLength)
                 {
-                    received = client.Receive(buffer, SocketFlags.None);
+                    clientReceiveTimerLoop = new Timer(CloseSocket, null, receiveTimeoutMs, receiveTimeoutMs);
+                    int received = await client.ReceiveAsync(buffer, SocketFlags.None);
                     string currentBatch = Encoding.UTF8.GetString(buffer, 0, received);
                     actualresponseLength += currentBatch.Length;
                     response += currentBatch;
+                    await clientReceiveTimerLoop.DisposeAsync();
+
                 }
 
                 if (!string.IsNullOrEmpty(response))
@@ -68,11 +81,15 @@ namespace TCPIPSampleApp
                 else
                     Console.WriteLine("Socket server response is empty.");
 
-                client.Shutdown(SocketShutdown.Both);
+                client.Close();
             }
             catch (Exception ex)
             {
-                client.Shutdown(SocketShutdown.Both);
+                if(clientReceiveTimer!=null)
+                    await clientReceiveTimer.DisposeAsync();
+                if(clientReceiveTimerLoop!=null)
+                    await clientReceiveTimerLoop.DisposeAsync();
+                client.Close();
                 Console.WriteLine(ex.GetType() + " => " + ex.Message);
             }
         }
@@ -83,8 +100,8 @@ namespace TCPIPSampleApp
             int port = 7096;
             var message = "ENQUIRY.SELECT,,ICONALERTS/Kenya123/KE0010001,API.ALERTS";
             int sendTimeoutMs = 5000;
-            int receivTimeoutMs = 5000;
-            await UseSocketClass(ipString, port, message, sendTimeoutMs, receivTimeoutMs);
+            int receiveTimeoutMs = 5000;
+            await UseSocketClass(ipString, port, message, sendTimeoutMs, receiveTimeoutMs);
             Console.ReadLine();
         }
     }
