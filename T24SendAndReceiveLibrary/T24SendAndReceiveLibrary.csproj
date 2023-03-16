@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>T24SendAndReceive</Title>
+    <PackageId>T24SendAndReceive</PackageId>
+    <Authors>Brokoth</Authors>
+    <Company>Brokoth</Company>
+    <Version>1.0.2</Version>
+    <Product>T24SendAndReceive</Product>
+    <Description>This package abstracts the logic used to send OFSs (T24 string messages) and receive responses from a T24 core banking server.</Description>
+    <PackageTags>T24;Socket;TCP/IP;TCPIP</PackageTags>
+    <PackageReleaseNotes>Added MIT license.</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>

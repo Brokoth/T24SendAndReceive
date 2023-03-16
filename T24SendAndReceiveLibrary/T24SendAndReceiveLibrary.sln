@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPIPSampleApp", "TCPIPSampleApp.csproj", "{ED7BECB2-2E2D-416D-B56A-8FCFB31F2DB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T24SendAndReceiveLibrary", "T24SendAndReceiveLibrary.csproj", "{71A65D8D-415F-4527-8C47-51488432D244}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ED7BECB2-2E2D-416D-B56A-8FCFB31F2DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED7BECB2-2E2D-416D-B56A-8FCFB31F2DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED7BECB2-2E2D-416D-B56A-8FCFB31F2DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED7BECB2-2E2D-416D-B56A-8FCFB31F2DB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71A65D8D-415F-4527-8C47-51488432D244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A65D8D-415F-4527-8C47-51488432D244}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A65D8D-415F-4527-8C47-51488432D244}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A65D8D-415F-4527-8C47-51488432D244}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {117C19F0-D827-47BD-9741-09B0FABB2979}
+		SolutionGuid = {D5B6D421-6755-43DE-B7FE-A63C33237F60}
 	EndGlobalSection
 EndGlobal
