@@ -2,20 +2,19 @@
 using System.Net;
 using System.Text;
 
-namespace T24SendAndReceiveLibrary
+namespace T24SendAndReceive
 {
     public class T24
     {
-        private static bool toContinue = true;
-        private static Socket client;
+        private bool toContinue = true;
+        private Socket client;
 
-        private static void CloseSocket(object state)
+        private void CloseSocket(object state)
         {
             toContinue = false;
-            Console.WriteLine("Socket client timeout elapsed");
             client.Close();
         }
-        public static async Task<string[]> Send(string ipString, int port, string message, int sendTimeoutMs, int receiveTimeoutMs)
+        public async Task<string[]> Send(string ipString, int port, string message, int sendTimeoutMs, int receiveTimeoutMs)
         {
             string response = "";
             Timer clientReceiveTimer = null;
@@ -42,32 +41,33 @@ namespace T24SendAndReceiveLibrary
                 await client.ReceiveAsync(framingBuffer, SocketFlags.None);
                 await clientReceiveTimer.DisposeAsync();
 
-                if (toContinue)
+                if (!toContinue)
+                    return new string[] { "FAIL", "Socket client timeout elapsed" };
+
+                Array.Reverse(framingBuffer);
+                int expectedResponseLength = BitConverter.ToInt32(framingBuffer);
+                var buffer = new byte[1024];
+                int actualresponseLength = 0;
+
+                while (actualresponseLength < expectedResponseLength && toContinue)
                 {
 
-                    Array.Reverse(framingBuffer);
-                    int expectedResponseLength = BitConverter.ToInt32(framingBuffer);
-                    var buffer = new byte[1024];
-                    int actualresponseLength = 0;
-
-                    while (actualresponseLength < expectedResponseLength && toContinue)
-                    {
-
-                        clientReceiveTimerLoop = new Timer(CloseSocket, null, receiveTimeoutMs, receiveTimeoutMs);
-                        int received = await client.ReceiveAsync(buffer, SocketFlags.None);
-                        string currentBatch = Encoding.UTF8.GetString(buffer, 0, received);
-                        actualresponseLength += currentBatch.Length;
-                        response += currentBatch;
-                        await clientReceiveTimerLoop.DisposeAsync();
-
-                    }
+                    clientReceiveTimerLoop = new Timer(CloseSocket, null, receiveTimeoutMs, receiveTimeoutMs);
+                    int received = await client.ReceiveAsync(buffer, SocketFlags.None);
+                    string currentBatch = Encoding.UTF8.GetString(buffer, 0, received);
+                    actualresponseLength += currentBatch.Length;
+                    response += currentBatch;
+                    await clientReceiveTimerLoop.DisposeAsync();
 
                 }
+
                 client.Close();
+
                 if (toContinue)
                     return new string[] { "OK", response };
                 else
                     return new string[] { "FAIL", "Socket client timeout elapsed" };
+
             }
             catch (Exception ex)
             {
